@@ -42,7 +42,7 @@
                     <h2>Welcome back</h2>
                     <p class="card-subtitle">Sign in to start asking and voting.</p>
 
-                    <form>
+                    <form action="home.html">
                         <label for="username">Username</label>
                         <input type="text" id="username" name="username" placeholder="Enter your username">
 
