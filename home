@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Space - DecideSpace</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-body">
+    <div class="dashboard-wrapper">
+        <header class="dashboard-navbar">
+            <a href="home.html" class="dashboard-logo">DecideSpace</a>
+
+            <nav class="dashboard-nav">
+                <a href="home.html" class="dashboard-link active">Home</a>
+                <a href="ask-question.html" class="dashboard-link">Ask Question</a>
+                <a href="login.html" class="dashboard-link logout-link">Logout</a>
+            </nav>
+        </header>
+
+        <main class="dashboard-main">
+            <section class="profile-hero">
+                <div class="profile-left">
+                    <div class="profile-avatar">E</div>
+
+                    <div class="profile-info">
+                        <span class="profile-tag">Your decision space</span>
+                        <h1>Elena</h1>
+                        <p class="profile-bio">
+                            Exploring ideas, asking better questions, and helping others make clearer choices.
+                        </p>
+
+                        <div class="interest-tags">
+                            <span class="interest-chip">Tech</span>
+                            <span class="interest-chip">Food</span>
+                            <span class="interest-chip">Travel</span>
+                            <span class="interest-chip">Design</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-actions">
+                    <button class="edit-profile-btn">Edit Profile</button>
+                </div>
+            </section>
+
+            <section class="stats-grid">
+                <article class="stat-card">
+                    <p class="stat-label">Questions Asked</p>
+                    <h2>12</h2>
+                    <span class="stat-note">Ideas you shared</span>
+                </article>
+
+                <article class="stat-card">
+                    <p class="stat-label">Answers Given</p>
+                    <h2>28</h2>
+                    <span class="stat-note">Choices you helped with</span>
+                </article>
+
+                <article class="stat-card">
+                    <p class="stat-label">Votes Received</p>
+                    <h2>104</h2>
+                    <span class="stat-note">Community responses</span>
+                </article>
+            </section>
+
+            <section class="dashboard-tabs-row">
+                <div class="dashboard-tabs">
+                    <button class="dashboard-tab active-tab" data-tab="questions">My Questions</button>
+                    <button class="dashboard-tab" data-tab="answers">My Answers</button>
+                    <button class="dashboard-tab" data-tab="preferences">Preferences</button>
+                </div>
+            </section>
+
+            <section class="dashboard-content-grid">
+                <div class="activity-column">
+                    <!-- My Questions -->
+                    <div class="tab-panel active-panel" id="questions-panel">
+                        <article class="activity-card">
+                            <div class="activity-top">
+                                <span class="activity-badge">My Question</span>
+                                <span class="activity-category">Tech</span>
+                            </div>
+
+                            <h3>Should I buy a Lenovo laptop or a Dell laptop?</h3>
+                            <p>
+                                I need something reliable for study, design work, and everyday use, but I am still undecided.
+                            </p>
+
+                            <div class="activity-meta">
+                                <span>42 votes</span>
+                                <span>2 options</span>
+                            </div>
+                        </article>
+
+                        <article class="activity-card">
+                            <div class="activity-top">
+                                <span class="activity-badge">My Question</span>
+                                <span class="activity-category">Food</span>
+                            </div>
+
+                            <h3>What should I eat for lunch today: burgers or ramen?</h3>
+                            <p>
+                                I want something satisfying but I cannot decide whether I want something quick or something warm.
+                            </p>
+
+                            <div class="activity-meta">
+                                <span>31 votes</span>
+                                <span>2 options</span>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- My Answers -->
+                    <div class="tab-panel" id="answers-panel">
+                        <article class="activity-card">
+                            <div class="activity-top">
+                                <span class="activity-badge">My Answer</span>
+                                <span class="activity-category">Study</span>
+                            </div>
+
+                            <h3>MacBook or iPad for university study?</h3>
+                            <p>
+                                You answered: “MacBook will be more flexible for assignments, research, and long-term use.”
+                            </p>
+
+                            <div class="activity-meta">
+                                <span>Answered 2 days ago</span>
+                                <span>18 total votes</span>
+                            </div>
+                        </article>
+
+                        <article class="activity-card">
+                            <div class="activity-top">
+                                <span class="activity-badge">My Answer</span>
+                                <span class="activity-category">Travel</span>
+                            </div>
+
+                            <h3>Japan or Italy for summer vacation?</h3>
+                            <p>
+                                You answered: “Japan feels easier if you want convenience, variety, and a more structured trip.”
+                            </p>
+
+                            <div class="activity-meta">
+                                <span>Answered 4 days ago</span>
+                                <span>56 total votes</span>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- Preferences -->
+                    <div class="tab-panel" id="preferences-panel">
+                        <article class="activity-card">
+                            <div class="activity-top">
+                                <span class="activity-badge">Preference</span>
+                                <span class="activity-category">Personalization</span>
+                            </div>
+
+                            <h3>Your interests shape what you see</h3>
+                            <p>
+                                Choose the categories you care about most so your dashboard feels more relevant, lighter to scan, and easier to use.
+                            </p>
+
+                            <div class="preference-list large-preference-list">
+                                <span class="preference-pill">Technology</span>
+                                <span class="preference-pill">Lifestyle</span>
+                                <span class="preference-pill">Travel</span>
+                                <span class="preference-pill">Shopping</span>
+                                <span class="preference-pill">Food</span>
+                                <span class="preference-pill">Design</span>
+                            </div>
+                        </article>
+
+                        <article class="activity-card">
+                            <div class="activity-top">
+                                <span class="activity-badge">Preference</span>
+                                <span class="activity-category">Activity</span>
+                            </div>
+
+                            <h3>Your current decision style</h3>
+                            <p>
+                                You tend to ask practical questions, answer quickly, and engage most with topics related to study, shopping, and travel.
+                            </p>
+
+                            <div class="activity-meta">
+                                <span>Most active in Tech</span>
+                                <span>Helpful response rate: High</span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <aside class="side-panel">
+    <!-- Questions side -->
+    <div class="side-panel-group active-panel" id="questions-side">
+        <div class="side-card">
+            <h3>Question Insights</h3>
+            <p>
+                Most of your questions are practical and comparison-based, especially around technology, food, and daily choices.
+            </p>
+            <div class="preference-list">
+                <span class="preference-pill">Most asked: Tech</span>
+                <span class="preference-pill">2-option format</span>
+                <span class="preference-pill">High engagement</span>
+            </div>
+        </div>
+
+        <div class="side-card">
+            <h3>Recent Question Activity</h3>
+            <ul class="recent-list">
+                <li>Last question posted 2 days ago</li>
+                <li>Most voted question: Lenovo or Dell?</li>
+                <li>Total votes received this week: 73</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Answers side -->
+    <div class="side-panel-group" id="answers-side">
+        <div class="side-card">
+            <h3>Answer Summary</h3>
+            <p>
+                Your answers are thoughtful, practical, and usually focused on helping others compare options clearly.
+            </p>
+            <div class="preference-list">
+                <span class="preference-pill">Practical</span>
+                <span class="preference-pill">Clear</span>
+                <span class="preference-pill">Fast Reply</span>
+            </div>
+        </div>
+
+        <div class="side-card">
+            <h3>Most Answered Topics</h3>
+            <ul class="recent-list">
+                <li>Study tools and devices</li>
+                <li>Travel choices</li>
+                <li>Food and lifestyle decisions</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Preferences side -->
+    <div class="side-panel-group" id="preferences-side">
+        <div class="side-card">
+            <h3>Preference Tips</h3>
+            <p>
+                Updating your interests helps reduce noise and makes the platform show more relevant questions for you.
+            </p>
+        </div>
+
+        <div class="side-card">
+            <h3>Your Current Focus</h3>
+            <ul class="recent-list">
+                <li>Technology and devices</li>
+                <li>Travel and lifestyle</li>
+                <li>Food and casual daily choices</li>
+            </ul>
+        </div>
+    </div>
+</aside>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
