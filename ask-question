@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ask Question - DecideSpace</title>
+    <title>Ask Question - This or That</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="ask-body">
     <div class="ask-wrapper">
         <header class="dashboard-navbar">
-            <a href="home.html" class="dashboard-logo">DecideSpace</a>
+            <a href="home.html" class="dashboard-logo">This or That</a>
 
             <nav class="dashboard-nav">
                 <a href="home.html" class="dashboard-link">Home</a>
                 <a href="ask-question.html" class="dashboard-link active">Ask Question</a>
+                <a href="profile.html" class="dashboard-link">Profile</a>
                 <a href="login.html" class="dashboard-link logout-link">Logout</a>
             </nav>
         </header>
@@ -21,7 +22,7 @@
         <main class="ask-main">
             <section class="ask-hero">
                 <div class="ask-hero-text">
-                    <span class="ask-tag">Start a new decision</span>
+                    <span class="ask-tag">Start a new decision on This or That</span>
                     <h1>Ask a Question</h1>
                     <p>
                         Share what you are deciding, add clear options, and let the community help you choose.
@@ -152,4 +153,4 @@
 
     <script src="ask-question.js"></script>
 </body>
-</html>s
+</html>
