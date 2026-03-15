@@ -1,267 +1,515 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Space - DecideSpace</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>This or That — Home</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="dashboard-body">
-    <div class="dashboard-wrapper">
-        <header class="dashboard-navbar">
-            <a href="home.html" class="dashboard-logo">DecideSpace</a>
+<body class="home-body">
 
-            <nav class="dashboard-nav">
-                <a href="home.html" class="dashboard-link active">Home</a>
-                <a href="ask-question.html" class="dashboard-link">Ask Question</a>
-                <a href="login.html" class="dashboard-link logout-link">Logout</a>
-            </nav>
-        </header>
+  <header class="site-nav-wrap">
+    <nav class="site-nav">
+      <a href="home.html" class="brand-lockup">
+        <span class="brand-dot"></span>
+        <div class="brand-text-group">
+          <span class="brand-name">This or That</span>
+          <span class="brand-sub">community decisions</span>
+        </div>
+      </a>
 
-        <main class="dashboard-main">
-            <section class="profile-hero">
-                <div class="profile-left">
-                    <div class="profile-avatar">E</div>
+      <div class="site-nav-links">
+        <a href="home.html" class="active">Home</a>
+        <a href="ask-question.html">Ask</a>
+        <a href="profile.html">Profile</a>
+        <a href="login.html" class="logout-link-v2">Logout</a>
+      </div>
+    </nav>
+  </header>
 
-                    <div class="profile-info">
-                        <span class="profile-tag">Your decision space</span>
-                        <h1>Elena</h1>
-                        <p class="profile-bio">
-                            Exploring ideas, asking better questions, and helping others make clearer choices.
-                        </p>
+  <main class="home-shell">
 
-                        <div class="interest-tags">
-                            <span class="interest-chip">Tech</span>
-                            <span class="interest-chip">Food</span>
-                            <span class="interest-chip">Travel</span>
-                            <span class="interest-chip">Design</span>
-                        </div>
-                    </div>
-                </div>
+    <section class="home-hero">
+      <div class="home-hero-copy">
+        <span class="home-kicker">Discover what people are deciding</span>
+        <h1>Vote fast. Compare clearly. Help others choose.</h1>
+        <p>
+          Browse real decisions from the community, see where the vote is going, and join the conversation in seconds.
+        </p>
 
-                <div class="profile-actions">
-                    <button class="edit-profile-btn">Edit Profile</button>
-                </div>
-            </section>
+        <div class="home-hero-actions">
+          <a href="ask-question.html" class="home-primary-cta">Ask a Question</a>
+          <a href="#feed-start" class="home-secondary-cta">Explore Feed</a>
+        </div>
+      </div>
 
-            <section class="stats-grid">
-                <article class="stat-card">
-                    <p class="stat-label">Questions Asked</p>
-                    <h2>12</h2>
-                    <span class="stat-note">Ideas you shared</span>
-                </article>
+      <div class="home-hero-side">
+        <div class="hero-insight-card">
+          <div class="hero-insight-top">
+            <span class="mini-badge">Live now</span>
+            <span class="mini-meta">1,240 active votes</span>
+          </div>
+          <h3>Today’s most active decision</h3>
+          <p>Should I buy a Lenovo laptop or a Dell laptop?</p>
 
-                <article class="stat-card">
-                    <p class="stat-label">Answers Given</p>
-                    <h2>28</h2>
-                    <span class="stat-note">Choices you helped with</span>
-                </article>
-
-                <article class="stat-card">
-                    <p class="stat-label">Votes Received</p>
-                    <h2>104</h2>
-                    <span class="stat-note">Community responses</span>
-                </article>
-            </section>
-
-            <section class="dashboard-tabs-row">
-                <div class="dashboard-tabs">
-                    <button class="dashboard-tab active-tab" data-tab="questions">My Questions</button>
-                    <button class="dashboard-tab" data-tab="answers">My Answers</button>
-                    <button class="dashboard-tab" data-tab="preferences">Preferences</button>
-                </div>
-            </section>
-
-            <section class="dashboard-content-grid">
-                <div class="activity-column">
-                    <!-- My Questions -->
-                    <div class="tab-panel active-panel" id="questions-panel">
-                        <article class="activity-card">
-                            <div class="activity-top">
-                                <span class="activity-badge">My Question</span>
-                                <span class="activity-category">Tech</span>
-                            </div>
-
-                            <h3>Should I buy a Lenovo laptop or a Dell laptop?</h3>
-                            <p>
-                                I need something reliable for study, design work, and everyday use, but I am still undecided.
-                            </p>
-
-                            <div class="activity-meta">
-                                <span>42 votes</span>
-                                <span>2 options</span>
-                            </div>
-                        </article>
-
-                        <article class="activity-card">
-                            <div class="activity-top">
-                                <span class="activity-badge">My Question</span>
-                                <span class="activity-category">Food</span>
-                            </div>
-
-                            <h3>What should I eat for lunch today: burgers or ramen?</h3>
-                            <p>
-                                I want something satisfying but I cannot decide whether I want something quick or something warm.
-                            </p>
-
-                            <div class="activity-meta">
-                                <span>31 votes</span>
-                                <span>2 options</span>
-                            </div>
-                        </article>
-                    </div>
-
-                    <!-- My Answers -->
-                    <div class="tab-panel" id="answers-panel">
-                        <article class="activity-card">
-                            <div class="activity-top">
-                                <span class="activity-badge">My Answer</span>
-                                <span class="activity-category">Study</span>
-                            </div>
-
-                            <h3>MacBook or iPad for university study?</h3>
-                            <p>
-                                You answered: “MacBook will be more flexible for assignments, research, and long-term use.”
-                            </p>
-
-                            <div class="activity-meta">
-                                <span>Answered 2 days ago</span>
-                                <span>18 total votes</span>
-                            </div>
-                        </article>
-
-                        <article class="activity-card">
-                            <div class="activity-top">
-                                <span class="activity-badge">My Answer</span>
-                                <span class="activity-category">Travel</span>
-                            </div>
-
-                            <h3>Japan or Italy for summer vacation?</h3>
-                            <p>
-                                You answered: “Japan feels easier if you want convenience, variety, and a more structured trip.”
-                            </p>
-
-                            <div class="activity-meta">
-                                <span>Answered 4 days ago</span>
-                                <span>56 total votes</span>
-                            </div>
-                        </article>
-                    </div>
-
-                    <!-- Preferences -->
-                    <div class="tab-panel" id="preferences-panel">
-                        <article class="activity-card">
-                            <div class="activity-top">
-                                <span class="activity-badge">Preference</span>
-                                <span class="activity-category">Personalization</span>
-                            </div>
-
-                            <h3>Your interests shape what you see</h3>
-                            <p>
-                                Choose the categories you care about most so your dashboard feels more relevant, lighter to scan, and easier to use.
-                            </p>
-
-                            <div class="preference-list large-preference-list">
-                                <span class="preference-pill">Technology</span>
-                                <span class="preference-pill">Lifestyle</span>
-                                <span class="preference-pill">Travel</span>
-                                <span class="preference-pill">Shopping</span>
-                                <span class="preference-pill">Food</span>
-                                <span class="preference-pill">Design</span>
-                            </div>
-                        </article>
-
-                        <article class="activity-card">
-                            <div class="activity-top">
-                                <span class="activity-badge">Preference</span>
-                                <span class="activity-category">Activity</span>
-                            </div>
-
-                            <h3>Your current decision style</h3>
-                            <p>
-                                You tend to ask practical questions, answer quickly, and engage most with topics related to study, shopping, and travel.
-                            </p>
-
-                            <div class="activity-meta">
-                                <span>Most active in Tech</span>
-                                <span>Helpful response rate: High</span>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-
-                <aside class="side-panel">
-    <!-- Questions side -->
-    <div class="side-panel-group active-panel" id="questions-side">
-        <div class="side-card">
-            <h3>Question Insights</h3>
-            <p>
-                Most of your questions are practical and comparison-based, especially around technology, food, and daily choices.
-            </p>
-            <div class="preference-list">
-                <span class="preference-pill">Most asked: Tech</span>
-                <span class="preference-pill">2-option format</span>
-                <span class="preference-pill">High engagement</span>
+          <div class="hero-mini-bars">
+            <div class="hero-mini-option">
+              <div class="hero-mini-label-row">
+                <span>Lenovo</span>
+                <span>58%</span>
+              </div>
+              <div class="hero-mini-track">
+                <div class="hero-mini-fill fill-lenovo"></div>
+              </div>
             </div>
-        </div>
 
-        <div class="side-card">
-            <h3>Recent Question Activity</h3>
-            <ul class="recent-list">
-                <li>Last question posted 2 days ago</li>
-                <li>Most voted question: Lenovo or Dell?</li>
-                <li>Total votes received this week: 73</li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Answers side -->
-    <div class="side-panel-group" id="answers-side">
-        <div class="side-card">
-            <h3>Answer Summary</h3>
-            <p>
-                Your answers are thoughtful, practical, and usually focused on helping others compare options clearly.
-            </p>
-            <div class="preference-list">
-                <span class="preference-pill">Practical</span>
-                <span class="preference-pill">Clear</span>
-                <span class="preference-pill">Fast Reply</span>
+            <div class="hero-mini-option">
+              <div class="hero-mini-label-row">
+                <span>Dell</span>
+                <span>42%</span>
+              </div>
+              <div class="hero-mini-track">
+                <div class="hero-mini-fill fill-dell"></div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+    </section>
 
-        <div class="side-card">
-            <h3>Most Answered Topics</h3>
-            <ul class="recent-list">
-                <li>Study tools and devices</li>
-                <li>Travel choices</li>
-                <li>Food and lifestyle decisions</li>
-            </ul>
-        </div>
-    </div>
+    <section class="feed-toolbar" id="feed-start">
+      <div class="feed-tabs">
+        <button class="feed-tab active-feed-tab" data-feed="for-you">For You</button>
+        <button class="feed-tab" data-feed="trending">Trending</button>
+        <button class="feed-tab" data-feed="new">New</button>
+        <button class="feed-tab" data-feed="unanswered">Unanswered</button>
+      </div>
 
-    <!-- Preferences side -->
-    <div class="side-panel-group" id="preferences-side">
-        <div class="side-card">
-            <h3>Preference Tips</h3>
-            <p>
-                Updating your interests helps reduce noise and makes the platform show more relevant questions for you.
+      <div class="feed-toolbar-note">
+        Updated for your interests
+      </div>
+    </section>
+
+    <section class="home-grid-v2">
+      <div class="feed-column">
+
+        <!-- FOR YOU -->
+        <div class="feed-panel active-feed-panel" id="for-you-panel">
+
+          <article class="question-card-v2">
+            <div class="question-card-top">
+              <div class="question-card-meta-left">
+                <span class="meta-chip neutral">Anonymous</span>
+                <span class="meta-chip accent-tech">Tech</span>
+                <span class="meta-time">2h ago</span>
+              </div>
+              <button class="save-link-btn" type="button">Save</button>
+            </div>
+
+            <h3>Should I buy a Lenovo laptop or a Dell laptop?</h3>
+            <p class="question-summary">
+              I need something reliable for study and design work, but I’m stuck between these two brands.
             </p>
+
+            <div class="vote-choice-row">
+              <button class="vote-choice active-choice">Lenovo</button>
+              <button class="vote-choice">Dell</button>
+            </div>
+
+            <div class="vote-progress-group">
+              <div class="vote-progress-item">
+                <div class="vote-progress-label">
+                  <span>Lenovo</span>
+                  <span>58% · 24 votes</span>
+                </div>
+                <div class="vote-progress-track">
+                  <div class="vote-progress-fill fill-58"></div>
+                </div>
+              </div>
+
+              <div class="vote-progress-item">
+                <div class="vote-progress-label">
+                  <span>Dell</span>
+                  <span>42% · 18 votes</span>
+                </div>
+                <div class="vote-progress-track">
+                  <div class="vote-progress-fill fill-42"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="comment-preview-box">
+              <div class="comment-preview-top">
+                <span class="comment-count">8 comments</span>
+                <span class="comment-link">View discussion</span>
+              </div>
+              <p>
+                “Lenovo may give you better value overall if you need solid performance without overspending.”
+              </p>
+            </div>
+
+            <div class="question-footer-meta">
+              <span>42 total votes</span>
+              <span>High engagement</span>
+              <span>Study / Productivity</span>
+            </div>
+          </article>
+
+          <article class="question-card-v2">
+            <div class="question-card-top">
+              <div class="question-card-meta-left">
+                <span class="meta-chip neutral">Anonymous</span>
+                <span class="meta-chip accent-food">Food</span>
+                <span class="meta-time">4h ago</span>
+              </div>
+              <button class="save-link-btn" type="button">Save</button>
+            </div>
+
+            <h3>What should I eat for lunch today: burgers or ramen?</h3>
+            <p class="question-summary">
+              I want something satisfying, but I can’t decide whether I want something quick or something warm.
+            </p>
+
+            <div class="vote-choice-row">
+              <button class="vote-choice">Burgers</button>
+              <button class="vote-choice active-choice">Ramen</button>
+            </div>
+
+            <div class="vote-progress-group">
+              <div class="vote-progress-item">
+                <div class="vote-progress-label">
+                  <span>Burgers</span>
+                  <span>39% · 12 votes</span>
+                </div>
+                <div class="vote-progress-track">
+                  <div class="vote-progress-fill fill-39"></div>
+                </div>
+              </div>
+
+              <div class="vote-progress-item">
+                <div class="vote-progress-label">
+                  <span>Ramen</span>
+                  <span>61% · 19 votes</span>
+                </div>
+                <div class="vote-progress-track">
+                  <div class="vote-progress-fill fill-61"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="comment-preview-box">
+              <div class="comment-preview-top">
+                <span class="comment-count">5 comments</span>
+                <span class="comment-link">View discussion</span>
+              </div>
+              <p>
+                “Ramen sounds better if you want something warm and comforting rather than just fast.”
+              </p>
+            </div>
+
+            <div class="question-footer-meta">
+              <span>31 total votes</span>
+              <span>Casual daily choice</span>
+              <span>Food / Lifestyle</span>
+            </div>
+          </article>
+
         </div>
 
-        <div class="side-card">
-            <h3>Your Current Focus</h3>
-            <ul class="recent-list">
-                <li>Technology and devices</li>
-                <li>Travel and lifestyle</li>
-                <li>Food and casual daily choices</li>
-            </ul>
-        </div>
-    </div>
-</aside>
-            </section>
-        </main>
-    </div>
+        <!-- TRENDING -->
+        <div class="feed-panel" id="trending-panel">
 
-    <script src="script.js"></script>
+          <article class="question-card-v2">
+            <div class="question-card-top">
+              <div class="question-card-meta-left">
+                <span class="meta-chip neutral">Anonymous</span>
+                <span class="meta-chip accent-travel">Travel</span>
+                <span class="meta-time">Trending now</span>
+              </div>
+              <button class="save-link-btn" type="button">Save</button>
+            </div>
+
+            <h3>Japan or Italy for summer vacation?</h3>
+            <p class="question-summary">
+              I want culture, food, and good weather, but can’t decide which trip would be better.
+            </p>
+
+            <div class="vote-choice-row">
+              <button class="vote-choice active-choice">Japan</button>
+              <button class="vote-choice">Italy</button>
+            </div>
+
+            <div class="vote-progress-group">
+              <div class="vote-progress-item">
+                <div class="vote-progress-label">
+                  <span>Japan</span>
+                  <span>54% · 37 votes</span>
+                </div>
+                <div class="vote-progress-track">
+                  <div class="vote-progress-fill fill-54"></div>
+                </div>
+              </div>
+
+              <div class="vote-progress-item">
+                <div class="vote-progress-label">
+                  <span>Italy</span>
+                  <span>46% · 31 votes</span>
+                </div>
+                <div class="vote-progress-track">
+                  <div class="vote-progress-fill fill-46"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="comment-preview-box">
+              <div class="comment-preview-top">
+                <span class="comment-count">12 comments</span>
+                <span class="comment-link">View discussion</span>
+              </div>
+              <p>
+                “Japan feels easier if you want convenience and structure, while Italy may feel slower and more atmospheric.”
+              </p>
+            </div>
+
+            <div class="question-footer-meta">
+              <span>68 total votes</span>
+              <span>Popular this week</span>
+              <span>Travel / Lifestyle</span>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- NEW -->
+        <div class="feed-panel" id="new-panel">
+
+          <article class="question-card-v2">
+            <div class="question-card-top">
+              <div class="question-card-meta-left">
+                <span class="meta-chip neutral">Anonymous</span>
+                <span class="meta-chip accent-study">Study</span>
+                <span class="meta-time">15m ago</span>
+              </div>
+              <button class="save-link-btn" type="button">Save</button>
+            </div>
+
+            <h3>Should I revise alone or with a study group tonight?</h3>
+            <p class="question-summary">
+              I need to prepare for an assignment and I’m deciding which approach will help me focus better.
+            </p>
+
+            <div class="vote-choice-row">
+              <button class="vote-choice">Alone</button>
+              <button class="vote-choice active-choice">Study Group</button>
+            </div>
+
+            <div class="vote-progress-group">
+              <div class="vote-progress-item">
+                <div class="vote-progress-label">
+                  <span>Alone</span>
+                  <span>33% · 3 votes</span>
+                </div>
+                <div class="vote-progress-track">
+                  <div class="vote-progress-fill fill-33"></div>
+                </div>
+              </div>
+
+              <div class="vote-progress-item">
+                <div class="vote-progress-label">
+                  <span>Study Group</span>
+                  <span>67% · 6 votes</span>
+                </div>
+                <div class="vote-progress-track">
+                  <div class="vote-progress-fill fill-67"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="comment-preview-box">
+              <div class="comment-preview-top">
+                <span class="comment-count">1 comment</span>
+                <span class="comment-link">View discussion</span>
+              </div>
+              <p>
+                “A study group is useful if you need accountability, but solo revision is better for depth.”
+              </p>
+            </div>
+
+            <div class="question-footer-meta">
+              <span>9 total votes</span>
+              <span>Just posted</span>
+              <span>Study / Productivity</span>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- UNANSWERED -->
+        <div class="feed-panel" id="unanswered-panel">
+
+          <article class="question-card-v2">
+            <div class="question-card-top">
+              <div class="question-card-meta-left">
+                <span class="meta-chip neutral">Anonymous</span>
+                <span class="meta-chip accent-design">Design</span>
+                <span class="meta-time">New</span>
+              </div>
+              <button class="save-link-btn" type="button">Save</button>
+            </div>
+
+            <h3>Should I make my portfolio minimalist or more experimental?</h3>
+            <p class="question-summary">
+              I want it to feel professional, but I also want it to show more personality.
+            </p>
+
+            <div class="vote-choice-row">
+              <button class="vote-choice">Minimalist</button>
+              <button class="vote-choice">Experimental</button>
+            </div>
+
+            <div class="empty-state-line">
+              No votes yet — be the first to help decide.
+            </div>
+
+            <div class="question-footer-meta">
+              <span>0 votes</span>
+              <span>0 comments</span>
+              <span>Needs answers</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <aside class="sidebar-column">
+
+        <div class="sidebar-card featured-brand-card">
+          <p class="featured-brand-kicker">THIS OR THAT</p>
+          <h3>Small choices, real momentum.</h3>
+          <p>
+            Follow topics you care about, vote faster, and help shape the feed.
+          </p>
+        </div>
+
+        <div class="sidebar-card">
+          <div class="sidebar-card-head">
+            <h4>Your interests</h4>
+            <span class="small-side-link">Edit</span>
+          </div>
+          <div class="topic-pill-wrap" id="homeInterestList">
+            <span>Technology</span>
+            <span>Food</span>
+            <span>Travel</span>
+            <span>Lifestyle</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <div class="sidebar-card-head">
+            <h4>Trending topics</h4>
+          </div>
+          <div class="topic-pill-wrap">
+            <span>Tech</span>
+            <span>Shopping</span>
+            <span>Daily Decisions</span>
+            <span>Travel</span>
+            <span>Productivity</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card leaderboard-card">
+          <div class="sidebar-card-head">
+            <h4>Top questions this week</h4>
+          </div>
+
+          <ol class="leaderboard-list">
+            <li>
+              <span class="rank-num">01</span>
+              <div>
+                <p>Japan or Italy for summer vacation?</p>
+                <span>68 votes</span>
+              </div>
+            </li>
+            <li>
+              <span class="rank-num">02</span>
+              <div>
+                <p>Lenovo or Dell for design work?</p>
+                <span>42 votes</span>
+              </div>
+            </li>
+            <li>
+              <span class="rank-num">03</span>
+              <div>
+                <p>Morning or evening workout?</p>
+                <span>39 votes</span>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sidebar-card quick-ask-card">
+          <div class="sidebar-card-head">
+            <h4>Quick decision</h4>
+          </div>
+          <p>Need a fast answer? Turn your choice into a poll and let the community vote.</p>
+          <a href="ask-question.html" class="quick-ask-btn">Create Poll</a>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <div class="interest-modal-overlay" id="interestModal">
+    <div class="interest-modal">
+      <div class="interest-modal-header">
+        <div class="ask-card-icon">★</div>
+        <div>
+          <h2>Personalise your feed</h2>
+          <p>
+            Pick the topics and decision styles you care about. You can skip this now and update it later in your profile.
+          </p>
+        </div>
+      </div>
+
+      <div class="interest-section">
+        <h4>Main topics</h4>
+        <div class="interest-grid" id="topicGrid">
+          <button class="interest-option">Technology</button>
+          <button class="interest-option">Food</button>
+          <button class="interest-option">Travel</button>
+          <button class="interest-option">Shopping</button>
+          <button class="interest-option">Lifestyle</button>
+          <button class="interest-option">Study</button>
+          <button class="interest-option">Design</button>
+          <button class="interest-option">Entertainment</button>
+          <button class="interest-option">Fashion</button>
+          <button class="interest-option">Fitness</button>
+          <button class="interest-option">Productivity</button>
+          <button class="interest-option">Relationships</button>
+          <button class="interest-option">Career</button>
+          <button class="interest-option">Beauty</button>
+          <button class="interest-option">Finance</button>
+          <button class="interest-option">Daily Decisions</button>
+        </div>
+      </div>
+
+      <div class="interest-section">
+        <h4>Decision styles</h4>
+        <div class="interest-grid" id="styleGrid">
+          <button class="interest-option">Quick daily choices</button>
+          <button class="interest-option">Product comparisons</button>
+          <button class="interest-option">Lifestyle questions</button>
+          <button class="interest-option">Long-term decisions</button>
+          <button class="interest-option">Just-for-fun polls</button>
+        </div>
+      </div>
+
+      <div class="interest-actions">
+        <button class="secondary-form-btn" id="skipInterestsBtn" type="button">Skip for now</button>
+        <button class="submit-question-btn" id="saveInterestsBtn" type="button">Save and continue</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="home.js"></script>
 </body>
 </html>
