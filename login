@@ -1,60 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Decision Support</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>This or That — Login</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-    <div class="page-wrapper">
-        <div class="page">
-            <section class="hero-section">
-                <div class="bg-circle bg-circle-one"></div>
-                <div class="bg-circle bg-circle-two"></div>
-                <div class="bg-circle bg-circle-three"></div>
-                <div class="bg-question">?</div>
+<body class="auth-body">
+  <main class="auth-shell">
+    <section class="auth-left">
+      <div class="auth-left-inner">
+        <div class="brand-mark">THIS OR THAT</div>
+        <h1 class="auth-display">Can’t decide?</h1>
+        <p class="auth-lead">
+          Ask anonymously, compare options clearly, and let the community help you choose.
+        </p>
 
-                <div class="hero-content">
-                    <span class="hero-tag">Anonymous decision space</span>
-                    <h1>Can’t decide?</h1>
-                    <p class="hero-text">
-                        Ask anonymously and let the crowd help you choose.
-                    </p>
-
-                    <div class="abstract-art">
-                        <div class="curve curve-one"></div>
-                        <div class="curve curve-two"></div>
-                        <div class="curve curve-three"></div>
-
-                        <div class="art-dot dot-one"></div>
-                        <div class="art-dot dot-two"></div>
-                        <div class="art-dot dot-three"></div>
-                        <div class="art-dot dot-four"></div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="login-section">
-                <div class="login-card">
-                    <div class="card-icon">?</div>
-
-                    <h2>Welcome back</h2>
-                    <p class="card-subtitle">Sign in to start asking and voting.</p>
-
-                    <form action="home.html">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username" placeholder="Enter your username">
-
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="Enter your password">
-
-                        <button type="submit" class="login-btn">Login</button>
-                        <button type="button" class="create-btn">Create Account</button>
-                    </form>
-                </div>
-            </section>
+        <div class="auth-mini-card">
+          <div class="auth-mini-dot"></div>
+          <p>Quick polls. Clear choices. Low-pressure decisions.</p>
         </div>
-    </div>
+      </div>
+    </section>
+
+    <section class="auth-right">
+      <div class="auth-card-v2">
+        <div class="auth-card-icon">?</div>
+        <h2>Welcome back</h2>
+        <p class="auth-card-text">
+          Log in to join today’s decisions on This or That.
+        </p>
+
+        <div class="auth-field">
+          <label for="username">Username</label>
+          <input id="username" type="text" placeholder="Enter your username" />
+        </div>
+
+        <div class="auth-field">
+          <label for="password">Password</label>
+          <input id="password" type="password" placeholder="Enter your password" />
+        </div>
+
+        <button type="button" class="auth-primary-btn" onclick="window.location.href='home.html'">
+          Login
+        </button>
+
+        <button type="button" class="auth-secondary-btn" onclick="window.location.href='register.html'">
+          Create Account
+        </button>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
