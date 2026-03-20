@@ -71,5 +71,40 @@ form.addEventListener("reset", () => {
 
 form.addEventListener("submit", (event) => {
     event.preventDefault();
-    alert("Question submitted successfully!");
+
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!currentUser) {
+        alert("You must be logged in");
+        return;
+    }
+
+    const title = questionTitleInput.value.trim();
+    const description = questionDescriptionInput.value.trim();
+    const options = Array.from(document.querySelectorAll('input[name="option[]"]'))
+        .map(i => i.value.trim())
+        .filter(v => v !== "");
+
+    if (!title || options.length < 2) {
+        alert("Add title and at least 2 options");
+        return;
+    }
+
+    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
+
+    const newPost = {
+        id: Date.now(),
+        userId: currentUser.id,
+        username: currentUser.username,
+        title,
+        description,
+        options,
+        comments: []
+    };
+
+    posts.unshift(newPost);
+    localStorage.setItem("posts", JSON.stringify(posts));
+
+    alert("Posted!");
+    window.location.href = "home.html";
 });

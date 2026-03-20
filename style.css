@@ -2672,3 +2672,111 @@ button {
     font-weight: 800;
     line-height: 1;
 }
+
+
+/* smooth animation */
+.comments-container {
+  transition: all 0.25s ease;
+}
+
+/* better button spacing */
+.open-comment-input-btn {
+  display: block;
+  margin-top: 8px;
+}
+
+/* nicer input focus */
+.comment-input:focus {
+  outline: none;
+  border-color: #6c5ce7;
+}
+
+
+/* COMMENTS & POST BUTTONS */
+
+.comment-box {
+    margin-top: 18px;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.74);
+    border-radius: 26px;
+    padding: 16px 20px;
+    box-shadow: 0 18px 36px rgba(79, 70, 229, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.comment-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #4b5563;
+}
+
+.view-comments-btn,
+.open-comment-input-btn,
+.submit-comment-btn {
+    border: 1.5px solid #d9def5;
+    background-color: white;
+    color: #374151;
+    padding: 8px 14px;
+    border-radius: 16px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.view-comments-btn:hover,
+.open-comment-input-btn:hover,
+.submit-comment-btn:hover {
+    background-color: rgba(99, 102, 241, 0.08);
+    border-color: #cbd3fb;
+    color: #4f46e5;
+}
+
+.comments-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.single-comment {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #5b6475;
+    background: rgba(243, 244, 255, 0.6);
+    padding: 10px 14px;
+    border-radius: 14px;
+}
+
+.comment-input-area {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.comment-input {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 16px;
+    border: 1.5px solid #d9def5;
+    font-size: 15px;
+    color: #1f2937;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.comment-input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.10);
+}

@@ -41,7 +41,7 @@
           <input id="password" type="password" placeholder="Enter your password" />
         </div>
 
-        <button type="button" class="auth-primary-btn" onclick="window.location.href='home.html'">
+        <button type="button" class="auth-primary-btn" id="loginBtn">
           Login
         </button>
 
@@ -51,5 +51,25 @@
       </div>
     </section>
   </main>
+
+  <script>
+  document.getElementById("loginBtn").addEventListener("click", () => {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+
+    const user = users.find(u => u.username === username && u.password === password);
+
+    if (!user) {
+      alert("Invalid login");
+      return;
+    }
+
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    window.location.href = "home.html";
+    });
+</script>
+
 </body>
 </html>
