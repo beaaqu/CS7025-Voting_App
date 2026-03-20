@@ -80,3 +80,165 @@ if (saveInterestsBtn) {
 }
 
 renderSavedInterests();
+
+
+function renderPosts() {
+    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
+    const container = document.querySelector("#for-you-panel");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    posts.forEach(post => {
+        const article = document.createElement("article");
+        article.className = "question-card-v2";
+
+        article.innerHTML = `
+            <h3>${post.title}</h3>
+            <p>${post.description || ""}</p>
+
+            <div class="vote-choice-row">
+                ${post.options.map(opt => `<button class="vote-choice">${opt}</button>`).join("")}
+            </div>
+
+            <div class="comment-section">
+                <input type="text" placeholder="Add comment..." class="comment-input">
+                <button class="add-comment-btn">Add Comment</button>
+                <div class="comments-list"></div>
+            </div>
+        `;
+
+        const input = article.querySelector(".comment-input");
+        const btn = article.querySelector(".add-comment-btn");
+        const list = article.querySelector(".comments-list");
+
+        function renderComments() {
+            list.innerHTML = "";
+            post.comments.forEach(c => {
+                const p = document.createElement("p");
+                p.textContent = c;
+                list.appendChild(p);
+            });
+        }
+
+        renderComments();
+
+        btn.addEventListener("click", () => {
+            if (!input.value.trim()) return;
+
+            post.comments.push(input.value.trim());
+
+            const posts = JSON.parse(localStorage.getItem("posts"));
+            const index = posts.findIndex(p => p.id === post.id);
+            posts[index] = post;
+            localStorage.setItem("posts", JSON.stringify(posts));
+
+            input.value = "";
+            renderComments();
+        });
+
+        container.appendChild(article);
+    });
+}
+
+function renderPosts() {
+    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
+    const container = document.querySelector("#for-you-panel");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    posts.forEach(post => {
+        const article = document.createElement("article");
+        article.className = "question-card-v2";
+
+        article.innerHTML = `
+            <h3>${post.title}</h3>
+            <p>${post.description || ""}</p>
+
+            <div class="vote-choice-row">
+                ${post.options.map(opt => `<button class="vote-choice">${opt}</button>`).join("")}
+            </div>
+
+            <div class="comment-preview-box">
+                <div class="comment-preview-top">
+                    <span class="comment-count">${post.comments.length} comments</span>
+                    <span class="comment-link">View discussion</span>
+                </div>
+            </div>
+
+            <div class="comment-section" style="display:none;">
+                <div class="comments-list"></div>
+
+                <div style="margin-top:10px;">
+                    <input type="text" placeholder="Write a comment..." class="comment-input">
+                    <button class="add-comment-btn">Post</button>
+                </div>
+            </div>
+        `;
+
+        const toggleBtn = article.querySelector(".comment-link");
+        const section = article.querySelector(".comment-section");
+        const list = article.querySelector(".comments-list");
+        const input = article.querySelector(".comment-input");
+        const btn = article.querySelector(".add-comment-btn");
+
+        // 🔁 render comments
+        function renderComments() {
+            list.innerHTML = "";
+
+            post.comments.forEach(comment => {
+                const p = document.createElement("p");
+                p.textContent = comment;
+                list.appendChild(p);
+            });
+        }
+
+        renderComments();
+
+        // 👇 toggle discussion
+        toggleBtn.addEventListener("click", () => {
+            if (section.style.display === "none") {
+                section.style.display = "block";
+                toggleBtn.textContent = "Hide discussion";
+            } else {
+                section.style.display = "none";
+                toggleBtn.textContent = "View discussion";
+            }
+        });
+
+        // ➕ add comment
+        btn.addEventListener("click", () => {
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+            if (!currentUser) {
+                alert("Login to comment");
+                return;
+            }
+
+            const text = input.value.trim();
+            if (!text) return;
+
+            const newComment = `${currentUser.username}: ${text}`;
+            post.comments.push(newComment);
+
+            const posts = JSON.parse(localStorage.getItem("posts"));
+            const index = posts.findIndex(p => p.id === post.id);
+            posts[index] = post;
+
+            localStorage.setItem("posts", JSON.stringify(posts));
+
+            input.value = "";
+            renderComments();
+
+            article.querySelector(".comment-count").textContent =
+                `${post.comments.length} comments`;
+        });
+
+        container.appendChild(article);
+    });
+}
+
+renderPosts();

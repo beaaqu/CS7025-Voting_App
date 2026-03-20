@@ -20,21 +20,28 @@ tabs.forEach((tab) => {
     });
 });
 
-const defaultProfile = {
-    avatarData: "",
-    displayName: "Kelly",
-    gender: "",
-    birthday: "",
-    region: "",
-    userId: "TT-2025-00421",
-    bio: "Curious about everyday decisions, good design, and helping people choose more clearly.",
-    interests: ["Technology", "Food", "Travel", "Design"]
-};
-
 function getProfileData() {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     const saved = JSON.parse(localStorage.getItem("profileData") || "null");
-    return saved || defaultProfile;
+
+    if (saved) return saved;
+
+    if (currentUser) {
+        return {
+            avatarData: "",
+            displayName: currentUser.username,
+            gender: "",
+            birthday: "",
+            region: "",
+            userId: "USER-" + currentUser.id,
+            bio: "No bio yet",
+            interests: ["Technology"]
+        };
+    }
+
+    return defaultProfile;
 }
+
 
 function saveProfileData(data) {
     localStorage.setItem("profileData", JSON.stringify(data));

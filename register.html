@@ -51,7 +51,7 @@
           <input id="confirm-password" type="password" placeholder="Confirm your password" />
         </div>
 
-        <button type="button" class="auth-primary-btn" onclick="window.location.href='home.html'">
+        <button type="button" class="auth-primary-btn" id="registerBtn">
           Create Account
         </button>
 
@@ -61,5 +61,46 @@
       </div>
     </section>
   </main>
+
+<script>
+document.getElementById("registerBtn").addEventListener("click", () => {
+  const username = document.getElementById("new-username").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("new-password").value;
+  const confirm = document.getElementById("confirm-password").value;
+
+  if (!username || !email || !password) {
+    alert("Fill all fields");
+    return;
+  }
+
+  if (password !== confirm) {
+    alert("Passwords do not match");
+    return;
+  }
+
+  const users = JSON.parse(localStorage.getItem("users") || "[]");
+
+  if (users.find(u => u.username === username)) {
+    alert("Username already exists");
+     return;
+  }
+
+  const newUser = {
+    id: Date.now(),
+    username,
+    email,
+    password
+  };
+
+  users.push(newUser);
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("currentUser", JSON.stringify(newUser));
+
+  alert("Account created!");
+  window.location.href = "home.html";
+  });
+  </script>
+
 </body>
 </html>
