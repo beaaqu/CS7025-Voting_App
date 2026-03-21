@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>This or That — Create Account</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body class="auth-body">
   <main class="auth-shell">
     <section class="auth-left">
@@ -31,29 +33,31 @@
           Set up your details and continue to the home feed.
         </p>
 
-        <div class="auth-field">
-          <label for="new-username">Username</label>
-          <input id="new-username" type="text" placeholder="Choose a username" />
-        </div>
+        <form id="registerForm">
+          <div class="auth-field">
+            <label for="new-username">Username</label>
+            <input id="new-username" type="text" placeholder="Choose a username" required />
+          </div>
 
-        <div class="auth-field">
-          <label for="email">Email</label>
-          <input id="email" type="email" placeholder="Enter your email" />
-        </div>
+          <div class="auth-field">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="Enter your email" required />
+          </div>
 
-        <div class="auth-field">
-          <label for="new-password">Password</label>
-          <input id="new-password" type="password" placeholder="Create a password" />
-        </div>
+          <div class="auth-field">
+            <label for="new-password">Password</label>
+            <input id="new-password" type="password" placeholder="Create a password" required />
+          </div>
 
-        <div class="auth-field">
-          <label for="confirm-password">Confirm Password</label>
-          <input id="confirm-password" type="password" placeholder="Confirm your password" />
-        </div>
+          <div class="auth-field">
+            <label for="confirm-password">Confirm Password</label>
+            <input id="confirm-password" type="password" placeholder="Confirm your password" required />
+          </div>
 
-        <button type="button" class="auth-primary-btn" id="registerBtn">
-          Create Account
-        </button>
+          <button type="submit" class="auth-primary-btn">
+            Create Account
+          </button>
+        </form>
 
         <button type="button" class="auth-secondary-btn" onclick="window.location.href='login.html'">
           Back to Login
@@ -61,46 +65,7 @@
       </div>
     </section>
   </main>
-
-<script>
-document.getElementById("registerBtn").addEventListener("click", () => {
-  const username = document.getElementById("new-username").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("new-password").value;
-  const confirm = document.getElementById("confirm-password").value;
-
-  if (!username || !email || !password) {
-    alert("Fill all fields");
-    return;
-  }
-
-  if (password !== confirm) {
-    alert("Passwords do not match");
-    return;
-  }
-
-  const users = JSON.parse(localStorage.getItem("users") || "[]");
-
-  if (users.find(u => u.username === username)) {
-    alert("Username already exists");
-     return;
-  }
-
-  const newUser = {
-    id: Date.now(),
-    username,
-    email,
-    password
-  };
-
-  users.push(newUser);
-  localStorage.setItem("users", JSON.stringify(users));
-  localStorage.setItem("currentUser", JSON.stringify(newUser));
-
-  alert("Account created!");
-  window.location.href = "home.html";
-  });
-  </script>
-
+  <script src="auth.js"></script>
 </body>
+
 </html>

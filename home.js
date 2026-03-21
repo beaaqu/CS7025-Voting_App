@@ -1,156 +1,213 @@
-// FEED TABS
-const feedTabs = document.querySelectorAll(".feed-tab");
-const feedPanels = document.querySelectorAll(".feed-panel");
+document.addEventListener('DOMContentLoaded', () => {
+    const tabs = document.querySelectorAll('.feed-tab')
+    const panels = document.querySelectorAll('.feed-panel')
 
-feedTabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-        const feedName = tab.dataset.feed;
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const name = tab.dataset.feed
+            tabs.forEach(t => t.classList.remove('active-feed-tab'))
+            panels.forEach(p => p.classList.remove('active-feed-panel'))
+            tab.classList.add('active-feed-tab')
 
-        feedTabs.forEach(t => t.classList.remove("active-feed-tab"));
-        feedPanels.forEach(p => p.classList.remove("active-feed-panel"));
+            const panel = document.getElementById(`${name}-panel`)
+            if (panel) panel.classList.add('active-feed-panel')
+            loadFeed(name)
+        })
+    })
 
-        tab.classList.add("active-feed-tab");
-        document.getElementById(`${feedName}-panel`)?.classList.add("active-feed-panel");
-    });
-});
+    const token = localStorage.getItem('token')
+    if (!token) { window.location.href = 'login.html'; return }
 
-// STATIC POSTS (HTML ONES)
-function enhanceExistingPosts() {
-    const posts = document.querySelectorAll(".question-card-v2");
+    const modal = document.getElementById('interestModal')
+    const skipBtn = document.getElementById('skipInterestsBtn')
+    const saveBtn = document.getElementById('saveInterestsBtn')
+    const editBtn = document.getElementById('editInterestsBtn')
 
-    posts.forEach((article, index) => {
-        const list = article.querySelector(".comments-list");
+    let userInterests = []
 
-        // Load saved comments OR keep existing ones
-        let saved = JSON.parse(localStorage.getItem("comments-" + index) || "null");
+    // check if user picked interests yet
+    checkPrefs()
 
-        if (!saved) {
-            // extract existing comments from HTML
-            saved = [];
-            list.querySelectorAll("p").forEach(p => {
-                saved.push(p.textContent);
-            });
-        }
-
-        const post = {
-            id: "static-" + index,
-            comments: saved
-        };
-
-        attachLogic(article, post, index, true);
-    });
-}
-
-// DYNAMIC POSTS
-function renderPosts() {
-    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
-    const container = document.querySelector("#for-you-panel");
-
-    posts.forEach(post => {
-        if (!post.comments) post.comments = [];
-
-        const article = document.createElement("article");
-        article.className = "question-card-v2";
-
-        article.innerHTML = `
-            <h3>${post.title}</h3>
-            <p>${post.description || ""}</p>
-
-            <div class="vote-choice-row">
-                ${post.options.map(opt => `<button class="vote-choice">${opt}</button>`).join("")}
-            </div>
-
-            <div class="comment-box">
-                <div class="comment-top">
-                    <span class="comment-count">${post.comments.length} comments</span>
-                    <button class="view-comments-btn">View discussion</button>
-                </div>
-
-                <div class="comments-container" style="display:none;">
-                    <div class="comments-list"></div>
-
-                    <button class="open-comment-input-btn">Add Comment</button>
-
-                    <div class="comment-input-area" style="display:none;">
-                        <input type="text" class="comment-input" placeholder="Write a comment...">
-                        <button class="submit-comment-btn">Post</button>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        attachLogic(article, post, null, false);
-        container.prepend(article);
-    });
-}
-
-// SHARED COMMENT LOGIC
-function attachLogic(article, post, index, isStatic) {
-    const viewBtn = article.querySelector(".view-comments-btn");
-    const container = article.querySelector(".comments-container");
-    const list = article.querySelector(".comments-list");
-
-    const openBtn = article.querySelector(".open-comment-input-btn");
-    const inputArea = article.querySelector(".comment-input-area");
-    const input = article.querySelector(".comment-input");
-    const submit = article.querySelector(".submit-comment-btn");
-
-    function renderComments() {
-        list.innerHTML = "";
-
-        post.comments.forEach(c => {
-            const p = document.createElement("p");
-            p.className = "single-comment";
-            p.textContent = c;
-            list.appendChild(p);
-        });
-
-        article.querySelector(".comment-count").textContent =
-            `${post.comments.length} comments`;
+    async function checkPrefs() {
+        try {
+            const resp = await fetch('/api/users/me', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            if (resp.ok) {
+                const user = await resp.json()
+                if (!user.interests || user.interests.length === 0) {
+                    if (modal) modal.classList.add('show')
+                } else {
+                    userInterests = user.interests
+                    syncSelections(userInterests)
+                    showInterestPills(user.interests)
+                }
+            }
+        } catch (e) { console.error(e) }
+        loadFeed('for-you')
     }
 
-    renderComments();
-
-    viewBtn.addEventListener("click", () => {
-        container.style.display =
-            container.style.display === "none" ? "block" : "none";
-    });
-
-    openBtn.addEventListener("click", () => {
-        inputArea.style.display = "block";
-        input.focus();
-    });
-
-    submit.addEventListener("click", () => {
-        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
-        if (!currentUser) {
-            alert("Login to comment");
-            return;
-        }
-
-        const text = input.value.trim();
-        if (!text) return;
-
-        const newComment = `${currentUser.username}: ${text}`;
-        post.comments.push(newComment);
-
-        if (isStatic) {
-            localStorage.setItem("comments-" + index, JSON.stringify(post.comments));
-        } else {
-            const posts = JSON.parse(localStorage.getItem("posts") || "[]");
-            const i = posts.findIndex(p => p.id === post.id);
-            if (i !== -1) {
-                posts[i] = post;
-                localStorage.setItem("posts", JSON.stringify(posts));
+    function syncSelections(list) {
+        document.querySelectorAll('.interest-option').forEach(opt => {
+            if (list.includes(opt.textContent.trim())) {
+                opt.classList.add('selected')
+            } else {
+                opt.classList.remove('selected')
             }
+        })
+    }
+
+    if (editBtn) {
+        editBtn.addEventListener('click', () => {
+            syncSelections(userInterests)
+            if (modal) modal.classList.add('show')
+        })
+    }
+
+    if (skipBtn) {
+        skipBtn.addEventListener('click', () => {
+            modal.classList.remove('show')
+            showInterestPills([])
+        })
+    }
+
+    if (saveBtn) {
+        saveBtn.addEventListener('click', async () => {
+            const picked = []
+            document.querySelectorAll('.interest-option.selected').forEach(opt => {
+                picked.push(opt.textContent.trim())
+            })
+
+            await fetch('/api/users/me', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ interests: picked })
+            })
+
+            userInterests = picked
+            modal.classList.remove('show')
+            showInterestPills(picked)
+            loadFeed('for-you', true)
+        })
+    }
+
+    document.querySelectorAll('.interest-option').forEach(opt => {
+        opt.addEventListener('click', () => opt.classList.toggle('selected'))
+    })
+
+    function showInterestPills(list) {
+        const box = document.getElementById('homeInterestList')
+        if (box && list.length > 0) {
+            box.innerHTML = ''
+            list.forEach(name => {
+                const s = document.createElement('span')
+                s.textContent = name
+                box.appendChild(s)
+            })
+        }
+    }
+
+    const endpoints = {
+        'for-you': '/api/home',
+        'trending': '/api/home/trending',
+        'new': '/api/home',
+        'unanswered': '/api/home/unanswered'
+    }
+
+    let loaded = {}
+
+    async function loadFeed(name, force) {
+        if (loaded[name] && !force) return
+        const panel = document.getElementById(`${name}-panel`)
+        if (!panel) return
+
+        panel.innerHTML = '<p>Loading...</p>'
+        try {
+            const resp = await fetch(endpoints[name], {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            if (resp.ok) {
+                const json = await resp.json()
+                loaded[name] = true
+                drawCards(panel, json.data)
+            }
+        } catch (e) {
+            panel.innerHTML = '<p>Error loading feed.</p>'
+        }
+    }
+
+    function drawCards(panel, questions) {
+        if (!questions || !questions.length) {
+            panel.innerHTML = '<p>No questions found.</p>'
+            return
         }
 
-        input.value = "";
-        renderComments();
-    });
-}
+        panel.innerHTML = questions.map(q => {
+            const date = new Date(q.created_at).toLocaleDateString()
+            const cats = (q.categories || []).map(c =>
+                `<span class="meta-chip accent-${c.toLowerCase()}">${c}</span>`
+            ).join('')
 
-// INIT
-renderPosts();
-enhanceExistingPosts();
+            const opts = q.options || []
+            let total = opts.reduce((s, o) => s + o.votes, 0)
+            const realTotal = total
+            if (total === 0) total = 1
+
+            const bars = opts.map(o => {
+                const pct = Math.round((o.votes / total) * 100)
+                return `
+              <div class="vote-progress-item">
+                <div class="vote-progress-label">
+                  <span>${o.option_text}</span>
+                  <span>${pct}% · ${o.votes} votes</span>
+                </div>
+                <div class="vote-progress-track">
+                  <div class="vote-progress-fill" style="width: ${pct}%"></div>
+                </div>
+              </div>`
+            }).join('')
+
+            const btns = opts.map(o => {
+                const active = q.user_voted_option_id === o.option_id ? 'active-choice' : ''
+                return `<button class="vote-choice ${active}" onclick="vote(${q.question_id}, ${o.option_id}, event)">${o.option_text}</button>`
+            }).join('')
+
+            return `
+            <article class="question-card-v2" onclick="window.location.href='question.html?id=${q.question_id}'">
+              <div class="question-card-top">
+                <div class="question-card-meta-left">
+                  <span class="meta-chip neutral">${q.username}</span>
+                  ${cats}
+                   <span class="meta-time">${date}</span>
+                </div>
+                <button class="save-link-btn" type="button" onclick="event.stopPropagation()">Save</button>
+              </div>
+              <h3>${q.title}</h3>
+              <p class="question-summary">${q.description}</p>
+              <div class="vote-choice-row">${btns}</div>
+              <div class="vote-progress-group">${bars}</div>
+              <div class="question-footer-meta">
+                <span>${q.interaction_count || 0} total interactions</span>
+              </div>
+            </article>`
+        }).join('')
+    }
+
+    window.vote = async function (qid, optId, ev) {
+        ev.stopPropagation()
+        const t = localStorage.getItem('token')
+        try {
+            const resp = await fetch('/api/responses', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${t}` },
+                body: JSON.stringify({ question_id: qid, option_id: optId })
+            })
+            if (resp.ok) {
+                window.location.reload()
+            } else {
+                const err = await resp.json()
+                alert(err.message)
+            }
+        } catch (e) { console.error(e) }
+    }
+})

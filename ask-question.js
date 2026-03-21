@@ -1,110 +1,97 @@
-const addOptionBtn = document.getElementById("addOptionBtn");
-const optionsContainer = document.getElementById("optionsContainer");
-const form = document.getElementById("questionForm");
+const addBtn = document.getElementById('addOptionBtn')
+const optBox = document.getElementById('optionsContainer')
+const form = document.getElementById('questionForm')
+const titleIn = document.getElementById('questionTitle')
+const descIn = document.getElementById('questionDescription')
+const prevTitle = document.getElementById('previewTitle')
+const prevDesc = document.getElementById('previewDescription')
+const prevOpts = document.getElementById('previewOptions')
 
-const previewTitle = document.getElementById("previewTitle");
-const previewDescription = document.getElementById("previewDescription");
-const previewOptions = document.getElementById("previewOptions");
+let numOptions = 2
 
-const questionTitleInput = document.getElementById("questionTitle");
-const questionDescriptionInput = document.getElementById("questionDescription");
+function refreshPreview() {
+    prevTitle.textContent = titleIn.value.trim() || 'Your question will appear here'
+    prevDesc.textContent = descIn.value.trim() || 'Add a title and a short description to preview your post.'
 
-let optionCount = 2;
-
-function updatePreview() {
-    const titleValue = questionTitleInput.value.trim();
-    const descriptionValue = questionDescriptionInput.value.trim();
-    const optionInputs = document.querySelectorAll('input[name="option[]"]');
-
-    previewTitle.textContent = titleValue || "Your question will appear here";
-    previewDescription.textContent =
-        descriptionValue || "Add a title and a short description to preview your post.";
-
-    previewOptions.innerHTML = "";
-
-    optionInputs.forEach((input, index) => {
-        const optionText = input.value.trim() || `Option ${index + 1}`;
-        const pill = document.createElement("span");
-        pill.className = "preview-option-pill";
-        pill.textContent = optionText;
-        previewOptions.appendChild(pill);
-    });
+    prevOpts.innerHTML = ''
+    document.querySelectorAll('input[name="option[]"]').forEach((inp, i) => {
+        const pill = document.createElement('span')
+        pill.className = 'preview-option-pill'
+        pill.textContent = inp.value.trim() || `Option ${i + 1}`
+        prevOpts.appendChild(pill)
+    })
 }
 
-addOptionBtn.addEventListener("click", () => {
-    optionCount += 1;
+addBtn.addEventListener('click', () => {
+    numOptions++
+    const row = document.createElement('div')
+    row.className = 'option-input-row'
+    row.innerHTML = `<input type="text" name="option[]" placeholder="Option ${numOptions}">`
 
-    const optionRow = document.createElement("div");
-    optionRow.className = "option-input-row";
+    optBox.appendChild(row)
+    row.querySelector('input').addEventListener('input', refreshPreview)
+    refreshPreview()
+})
 
-    optionRow.innerHTML = `
-        <input type="text" name="option[]" placeholder="Option ${optionCount}">
-    `;
+titleIn.addEventListener('input', refreshPreview)
+descIn.addEventListener('input', refreshPreview)
+document.querySelectorAll('input[name="option[]"]').forEach(inp => {
+    inp.addEventListener('input', refreshPreview)
+})
 
-    optionsContainer.appendChild(optionRow);
-
-    const newInput = optionRow.querySelector("input");
-    newInput.addEventListener("input", updatePreview);
-    updatePreview();
-});
-
-questionTitleInput.addEventListener("input", updatePreview);
-questionDescriptionInput.addEventListener("input", updatePreview);
-
-document.querySelectorAll('input[name="option[]"]').forEach((input) => {
-    input.addEventListener("input", updatePreview);
-});
-
-form.addEventListener("reset", () => {
+form.addEventListener('reset', () => {
     setTimeout(() => {
-        const allOptionRows = document.querySelectorAll(".option-input-row");
-        allOptionRows.forEach((row, index) => {
-            if (index > 1) {
-                row.remove();
-            }
-        });
+        const rows = document.querySelectorAll('.option-input-row')
+        rows.forEach((r, i) => { if (i > 1) r.remove() })
+        numOptions = 2
+        refreshPreview()
+    }, 0)
+})
 
-        optionCount = 2;
-        updatePreview();
-    }, 0);
-});
+form.addEventListener('submit', async (e) => {
+    e.preventDefault()
 
-form.addEventListener("submit", (event) => {
-    event.preventDefault();
+    const title = titleIn.value.trim()
+    const desc = descIn.value.trim()
+    const cat = document.getElementById('questionCategory').value
+    const anon = document.getElementById('anonymousCheck').checked
+    const allowComments = document.getElementById('allowCommentsCheck').checked
 
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const opts = Array.from(document.querySelectorAll('input[name="option[]"]'))
+        .map(inp => inp.value.trim())
+        .filter(v => v !== '')
 
-    if (!currentUser) {
-        alert("You must be logged in");
-        return;
+    if (!title || opts.length < 2) {
+        alert('Please provide a title and at least 2 options.')
+        return
     }
 
-    const title = questionTitleInput.value.trim();
-    const description = questionDescriptionInput.value.trim();
-    const options = Array.from(document.querySelectorAll('input[name="option[]"]'))
-        .map(i => i.value.trim())
-        .filter(v => v !== "");
+    const token = localStorage.getItem('token')
+    if (!token) { window.location.href = 'login.html'; return }
 
-    if (!title || options.length < 2) {
-        alert("Add title and at least 2 options");
-        return;
+    try {
+        const resp = await fetch('/api/questions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                title, description: desc,
+                categories: cat ? [cat] : [],
+                options: opts,
+                is_anonymous: anon,
+                comments_enabled: allowComments
+            })
+        })
+
+        if (resp.ok) {
+            window.location.href = 'home.html'
+        } else {
+            const err = await resp.json()
+            alert('Error: ' + err.message)
+        }
+    } catch (e) {
+        alert('Failed to connect to server.')
     }
-
-    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
-
-    const newPost = {
-        id: Date.now(),
-        userId: currentUser.id,
-        username: currentUser.username,
-        title,
-        description,
-        options,
-        comments: []
-    };
-
-    posts.unshift(newPost);
-    localStorage.setItem("posts", JSON.stringify(posts));
-
-    alert("Posted!");
-    window.location.href = "home.html";
-});
+})

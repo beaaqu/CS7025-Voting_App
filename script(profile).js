@@ -1,255 +1,333 @@
-const tabs = document.querySelectorAll(".dashboard-tab");
-const mainPanels = document.querySelectorAll(".tab-panel");
-const sidePanels = document.querySelectorAll(".side-panel-group");
+const tabs = document.querySelectorAll('.dashboard-tab')
+const mainPanels = document.querySelectorAll('.tab-panel')
+const sidePanels = document.querySelectorAll('.side-panel-group')
 
-tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-        const tabName = tab.dataset.tab;
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        const name = tab.dataset.tab
+        tabs.forEach(t => t.classList.remove('active-tab'))
+        mainPanels.forEach(p => p.classList.remove('active-panel'))
+        sidePanels.forEach(p => p.classList.remove('active-panel'))
 
-        tabs.forEach((item) => item.classList.remove("active-tab"));
-        mainPanels.forEach((panel) => panel.classList.remove("active-panel"));
-        sidePanels.forEach((panel) => panel.classList.remove("active-panel"));
+        tab.classList.add('active-tab')
+        const main = document.getElementById(`${name}-panel`)
+        const side = document.getElementById(`${name}-side`)
+        if (main) main.classList.add('active-panel')
+        if (side) side.classList.add('active-panel')
+    })
+})
 
-        tab.classList.add("active-tab");
+const defaults = {
+    avatarData: '',
+    displayName: 'Kelly',
+    gender: '',
+    birthday: '',
+    region: '',
+    userId: 'TT-2025-00421',
+    bio: 'Curious about everyday decisions, good design, and helping people choose more clearly.',
+    interests: ['Technology', 'Food', 'Travel', 'Design']
+}
 
-        const activeMainPanel = document.getElementById(`${tabName}-panel`);
-        const activeSidePanel = document.getElementById(`${tabName}-side`);
+let profile = null
 
-        if (activeMainPanel) activeMainPanel.classList.add("active-panel");
-        if (activeSidePanel) activeSidePanel.classList.add("active-panel");
-    });
-});
+function getProfile() { return profile || defaults }
 
-function getProfileData() {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    const saved = JSON.parse(localStorage.getItem("profileData") || "null");
-
-    if (saved) return saved;
-
-    if (currentUser) {
-        return {
-            avatarData: "",
-            displayName: currentUser.username,
-            gender: "",
-            birthday: "",
-            region: "",
-            userId: "USER-" + currentUser.id,
-            bio: "No bio yet",
-            interests: ["Technology"]
-        };
+async function saveProfile(data) {
+    const token = localStorage.getItem('token')
+    if (!token) return
+    try {
+        await fetch('/api/users/me', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify(data)
+        })
+    } catch (err) {
+        console.error('save failed', err)
     }
-
-    return defaultProfile;
 }
 
+function renderProfile() {
+    const data = getProfile()
 
-function saveProfileData(data) {
-    localStorage.setItem("profileData", JSON.stringify(data));
-}
+    const avatar = document.getElementById('profileAvatar')
+    const nameEl = document.getElementById('profileDisplayName')
+    const bioEl = document.getElementById('profileBioText')
+    const interestRow = document.getElementById('profileInterestRow')
+    const prefList = document.getElementById('profilePreferenceList')
+    const factsEl = document.getElementById('profileFactsList')
 
-function renderProfilePage() {
-    const data = getProfileData();
+    const qStat = document.getElementById('statQuestionsPosted')
+    const aStat = document.getElementById('statAnswersContributed')
+    const vStat = document.getElementById('statVotesReceived')
 
-    const avatar = document.getElementById("profileAvatar");
-    const displayName = document.getElementById("profileDisplayName");
-    const bio = document.getElementById("profileBioText");
-    const interests = document.getElementById("profileInterestRow");
-    const preferenceList = document.getElementById("profilePreferenceList");
-    const factsList = document.getElementById("profileFactsList");
+    if (qStat) qStat.textContent = data.questionsPosted || 0
+    if (aStat) aStat.textContent = data.answersContributed || 0
+    if (vStat) vStat.textContent = data.votesReceived || 0
 
     if (avatar) {
-        if (data.avatarData && data.avatarData.trim() !== "") {
-            avatar.innerHTML = `<img src="${data.avatarData}" alt="Avatar" class="profile-avatar-image">`;
+        if (data.avatarData && data.avatarData.trim() !== '') {
+            avatar.innerHTML = `<img src="${data.avatarData}" alt="Avatar" class="profile-avatar-image">`
         } else {
-            avatar.textContent = (data.displayName || "Kelly").charAt(0).toUpperCase();
+            avatar.textContent = (data.displayName || 'Kelly').charAt(0).toUpperCase()
         }
     }
 
-    if (displayName) displayName.textContent = data.displayName || "Kelly";
-    if (bio) bio.textContent = data.bio || defaultProfile.bio;
+    if (nameEl) nameEl.textContent = data.displayName || 'Kelly'
+    if (bioEl) bioEl.textContent = data.bio || defaults.bio
 
-    if (interests) {
-        interests.innerHTML = "";
-        data.interests.forEach((interest) => {
-            const span = document.createElement("span");
-            span.textContent = interest;
-            interests.appendChild(span);
-        });
+    // interests chips
+    if (interestRow) {
+        interestRow.innerHTML = ''
+        data.interests.forEach(i => {
+            const s = document.createElement('span')
+            s.textContent = i
+            interestRow.appendChild(s)
+        })
     }
 
-    if (preferenceList) {
-        preferenceList.innerHTML = "";
-        data.interests.forEach((interest) => {
-            const span = document.createElement("span");
-            span.textContent = interest;
-            preferenceList.appendChild(span);
-        });
+    if (prefList) {
+        prefList.innerHTML = ''
+        data.interests.forEach(i => {
+            const s = document.createElement('span')
+            s.textContent = i
+            prefList.appendChild(s)
+        })
     }
 
-    if (factsList) {
-        factsList.innerHTML = `
-            <div><span>Gender</span><strong>${data.gender || "Not set"}</strong></div>
-            <div><span>Birthday</span><strong>${data.birthday || "Not set"}</strong></div>
-            <div><span>Region</span><strong>${data.region || "Not set"}</strong></div>
-            <div><span>ID</span><strong>${data.userId || "TT-2025-00421"}</strong></div>
-        `;
+    if (factsEl) {
+        factsEl.innerHTML = `
+            <div><span>Gender</span><strong>${data.gender || 'Not set'}</strong></div>
+            <div><span>Birthday</span><strong>${data.birthday || 'Not set'}</strong></div>
+            <div><span>Region</span><strong>${data.region || 'Not set'}</strong></div>
+             <div><span>ID</span><strong>${data.userId || 'TT-2025-00421'}</strong></div>
+        `
     }
 }
 
-const editForm = document.getElementById("editProfileForm");
-const avatarFileInput = document.getElementById("avatarFileInput");
-const displayNameInput = document.getElementById("displayNameInput");
-const genderInput = document.getElementById("genderInput");
-const birthdayInput = document.getElementById("birthdayInput");
-const ipInput = document.getElementById("ipInput");
-const bioInput = document.getElementById("bioInput");
-const userIdDisplay = document.getElementById("userIdDisplay");
+// edit profile stuff
+const editForm = document.getElementById('editProfileForm')
+const avatarInput = document.getElementById('avatarFileInput')
+const nameIn = document.getElementById('displayNameInput')
+const genderIn = document.getElementById('genderInput')
+const bdayIn = document.getElementById('birthdayInput')
+const regionIn = document.getElementById('ipInput')
+const bioIn = document.getElementById('bioInput')
+const idDisplay = document.getElementById('userIdDisplay')
 
-const previewAvatarImage = document.getElementById("previewAvatarImage");
-const previewAvatarFallback = document.getElementById("previewAvatarFallback");
-const previewAvatarImageSide = document.getElementById("previewAvatarImageSide");
-const previewAvatarFallbackSide = document.getElementById("previewAvatarFallbackSide");
+const prevImg = document.getElementById('previewAvatarImage')
+const prevFallback = document.getElementById('previewAvatarFallback')
+const prevImgSide = document.getElementById('previewAvatarImageSide')
+const prevFallbackSide = document.getElementById('previewAvatarFallbackSide')
 
-const previewDisplayName = document.getElementById("previewDisplayName");
-const previewGender = document.getElementById("previewGender");
-const previewBirthday = document.getElementById("previewBirthday");
-const previewIP = document.getElementById("previewIP");
-const previewUserId = document.getElementById("previewUserId");
-const previewBio = document.getElementById("previewBio");
-const previewInterestRow = document.getElementById("previewInterestRow");
+const prevName = document.getElementById('previewDisplayName')
+const prevGender = document.getElementById('previewGender')
+const prevBday = document.getElementById('previewBirthday')
+const prevRegion = document.getElementById('previewIP')
+const prevId = document.getElementById('previewUserId')
+const prevBio = document.getElementById('previewBio')
+const prevInterests = document.getElementById('previewInterestRow')
 
-const interestButtons = document.querySelectorAll(".edit-interest-option");
+const interestBtns = document.querySelectorAll('.edit-interest-option')
 
-let currentAvatarData = "";
+let avatarData = ''
 
-function setPreviewAvatar(avatarData, displayName) {
-    const initial = (displayName || "Kelly").charAt(0).toUpperCase();
+function setAvatar(data, name) {
+    const initial = (name || 'Kelly').charAt(0).toUpperCase()
 
-    if (avatarData && avatarData.trim() !== "") {
-        if (previewAvatarImage) {
-            previewAvatarImage.src = avatarData;
-            previewAvatarImage.style.display = "block";
-        }
-        if (previewAvatarFallback) {
-            previewAvatarFallback.style.display = "none";
-        }
-
-        if (previewAvatarImageSide) {
-            previewAvatarImageSide.src = avatarData;
-            previewAvatarImageSide.style.display = "block";
-        }
-        if (previewAvatarFallbackSide) {
-            previewAvatarFallbackSide.style.display = "none";
-        }
+    if (data && data.trim() !== '') {
+        if (prevImg) { prevImg.src = data; prevImg.style.display = 'block' }
+        if (prevFallback) prevFallback.style.display = 'none'
+        if (prevImgSide) { prevImgSide.src = data; prevImgSide.style.display = 'block' }
+        if (prevFallbackSide) prevFallbackSide.style.display = 'none'
     } else {
-        if (previewAvatarImage) previewAvatarImage.style.display = "none";
-        if (previewAvatarFallback) {
-            previewAvatarFallback.style.display = "flex";
-            previewAvatarFallback.textContent = initial;
-        }
-
-        if (previewAvatarImageSide) previewAvatarImageSide.style.display = "none";
-        if (previewAvatarFallbackSide) {
-            previewAvatarFallbackSide.style.display = "flex";
-            previewAvatarFallbackSide.textContent = initial;
-        }
+        if (prevImg) prevImg.style.display = 'none'
+        if (prevFallback) { prevFallback.style.display = 'flex'; prevFallback.textContent = initial }
+        if (prevImgSide) prevImgSide.style.display = 'none'
+        if (prevFallbackSide) { prevFallbackSide.style.display = 'flex'; prevFallbackSide.textContent = initial }
     }
 }
 
-function renderPreview() {
-    if (!previewDisplayName) return;
+function refreshPreview() {
+    if (!prevName) return
 
-    const selectedInterests = Array.from(document.querySelectorAll(".edit-interest-option.selected"))
-        .map((btn) => btn.textContent.trim());
+    const picked = Array.from(document.querySelectorAll('.edit-interest-option.selected'))
+        .map(b => b.textContent.trim())
+    const name = nameIn.value.trim() || 'Kelly'
 
-    const displayName = displayNameInput.value.trim() || "Kelly";
+    setAvatar(avatarData, name)
 
-    setPreviewAvatar(currentAvatarData, displayName);
+    prevName.textContent = name
+    prevGender.textContent = genderIn.value || 'Gender not set'
+    prevBday.textContent = bdayIn.value || 'Birthday not set'
+    prevRegion.textContent = regionIn.value.trim() || 'Region not set'
+    prevId.textContent = `ID: ${idDisplay.textContent}`
+    prevBio.textContent = bioIn.value.trim() || defaults.bio
 
-    previewDisplayName.textContent = displayName;
-    previewGender.textContent = genderInput.value || "Gender not set";
-    previewBirthday.textContent = birthdayInput.value || "Birthday not set";
-    previewIP.textContent = ipInput.value.trim() || "Region not set";
-    previewUserId.textContent = `ID: ${userIdDisplay.textContent}`;
-    previewBio.textContent = bioInput.value.trim() || defaultProfile.bio;
-
-    previewInterestRow.innerHTML = "";
-    (selectedInterests.length ? selectedInterests : defaultProfile.interests).forEach((interest) => {
-        const span = document.createElement("span");
-        span.textContent = interest;
-        previewInterestRow.appendChild(span);
-    });
+    prevInterests.innerHTML = ''
+        ; (picked.length ? picked : defaults.interests).forEach(i => {
+            const s = document.createElement('span')
+            s.textContent = i
+            prevInterests.appendChild(s)
+        })
 }
 
-function loadEditProfilePage() {
-    if (!editForm) return;
+function setupEditPage() {
+    if (!editForm) return
+    const data = getProfile()
 
-    const data = getProfileData();
+    avatarData = data.avatarData || ''
+    nameIn.value = data.displayName || 'Kelly'
+    genderIn.value = data.gender || ''
+    bdayIn.value = data.birthday || ''
+    regionIn.value = data.region || ''
+    bioIn.value = data.bio || defaults.bio
+    idDisplay.textContent = data.userId || 'TT-2025-00421'
 
-    currentAvatarData = data.avatarData || "";
-    displayNameInput.value = data.displayName || "Kelly";
-    genderInput.value = data.gender || "";
-    birthdayInput.value = data.birthday || "";
-    ipInput.value = data.region || "";
-    bioInput.value = data.bio || defaultProfile.bio;
-    userIdDisplay.textContent = data.userId || "TT-2025-00421";
+    interestBtns.forEach(btn => {
+        if (data.interests.includes(btn.textContent.trim())) btn.classList.add('selected')
+    })
 
-    interestButtons.forEach((btn) => {
-        if (data.interests.includes(btn.textContent.trim())) {
-            btn.classList.add("selected");
-        }
-    });
+    refreshPreview()
 
-    renderPreview();
+        ;[nameIn, genderIn, bdayIn, regionIn, bioIn].forEach(inp => {
+            inp.addEventListener('input', refreshPreview)
+            inp.addEventListener('change', refreshPreview)
+        })
 
-    [displayNameInput, genderInput, birthdayInput, ipInput, bioInput].forEach((input) => {
-        input.addEventListener("input", renderPreview);
-        input.addEventListener("change", renderPreview);
-    });
-
-    if (avatarFileInput) {
-        avatarFileInput.addEventListener("change", (event) => {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                currentAvatarData = e.target.result;
-                renderPreview();
-            };
-            reader.readAsDataURL(file);
-        });
+    if (avatarInput) {
+        avatarInput.addEventListener('change', (e) => {
+            const file = e.target.files[0]
+            if (!file) return
+            const reader = new FileReader()
+            reader.onload = (ev) => { avatarData = ev.target.result; refreshPreview() }
+            reader.readAsDataURL(file)
+        })
     }
 
-    interestButtons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            btn.classList.toggle("selected");
-            renderPreview();
-        });
-    });
+    interestBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.classList.toggle('selected')
+            refreshPreview()
+        })
+    })
 
-    editForm.addEventListener("submit", (event) => {
-        event.preventDefault();
+    editForm.addEventListener('submit', async (e) => {
+        e.preventDefault()
 
-        const selectedInterests = Array.from(document.querySelectorAll(".edit-interest-option.selected"))
-            .map((btn) => btn.textContent.trim());
+        const picked = Array.from(document.querySelectorAll('.edit-interest-option.selected'))
+            .map(b => b.textContent.trim())
 
         const updated = {
-            avatarData: currentAvatarData,
-            displayName: displayNameInput.value.trim() || "Kelly",
-            gender: genderInput.value || "",
-            birthday: birthdayInput.value || "",
-            region: ipInput.value.trim() || "",
-            userId: userIdDisplay.textContent || "TT-2025-00421",
-            bio: bioInput.value.trim() || defaultProfile.bio,
-            interests: selectedInterests.length ? selectedInterests : defaultProfile.interests
-        };
+            avatarData: avatarData,
+            displayName: nameIn.value.trim() || 'Kelly',
+            gender: genderIn.value || '',
+            birthday: bdayIn.value || '',
+            region: regionIn.value.trim() || '',
+            userId: idDisplay.textContent || 'TT-2025-00421',
+            bio: bioIn.value.trim() || defaults.bio,
+            interests: picked.length ? picked : defaults.interests
+        }
 
-        saveProfileData(updated);
-        localStorage.setItem("selectedInterests", JSON.stringify(updated.interests));
-        window.location.href = "profile.html";
-    });
+        await saveProfile(updated)
+        localStorage.setItem('selectedInterests', JSON.stringify(updated.interests))
+        window.location.href = 'profile.html'
+    })
 }
 
-renderProfilePage();
-loadEditProfilePage();
+async function init() {
+    const token = localStorage.getItem('token')
+    if (!token) { window.location.href = 'login.html'; return }
+
+    try {
+        const resp = await fetch('/api/users/me', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+        if (resp.ok) {
+            const d = await resp.json()
+            profile = {
+                avatarData: d.avatarData || '',
+                displayName: d.displayName || d.username,
+                gender: d.gender || '',
+                birthday: d.birthday || '',
+                region: d.region || '',
+                userId: `TT-${d.user_id}`,
+                bio: d.bio || defaults.bio,
+                interests: d.interests && d.interests.length ? d.interests : defaults.interests,
+                questionsPosted: d.questionsPosted,
+                answersContributed: d.answersContributed,
+                votesReceived: d.votesReceived
+            }
+        }
+    } catch (err) {
+        console.error('profile load failed', err)
+    }
+
+    renderProfile()
+    setupEditPage()
+    loadActivity(token)
+}
+
+function makeCards(questions, label) {
+    if (!questions || !questions.length) return '<p>No activity yet.</p>'
+
+    return questions.map(q => {
+        const date = new Date(q.created_at).toLocaleDateString()
+        const cats = (q.categories || []).map(c =>
+            `<span class="meta-chip accent-${c.toLowerCase()}">${c}</span>`
+        ).join('')
+
+        let total = q.options.reduce((s, o) => s + (o.votes || 0), 0)
+        if (total === 0) total = 1
+
+        const bars = q.options.map(o => {
+            const pct = Math.round(((o.votes || 0) / total) * 100)
+            return `
+            <div class="vote-progress-item">
+              <div class="vote-progress-label">
+                <span>${o.option_text}</span>
+                 <span>${pct}% · ${o.votes || 0} votes</span>
+              </div>
+              <div class="vote-progress-track">
+                <div class="vote-progress-fill" style="width:${pct}%"></div>
+              </div>
+            </div>`
+        }).join('')
+
+        return `
+        <article class="profile-card-v2" onclick="window.location.href='question.html?id=${q.question_id}'" style="cursor:pointer;">
+            <div class="profile-card-top">
+                <div class="profile-card-tags">
+                <span class="meta-chip neutral">${label}</span>
+                ${cats}
+                </div>
+                <span class="profile-card-time">${date}</span>
+            </div>
+            <h3>${q.title}</h3>
+            <p>${q.description}</p>
+            <div class="vote-progress-group">${bars}</div>
+            <div class="profile-card-footer">
+              <span>${q.interaction_count} total interactions</span>
+            </div>
+        </article>`
+    }).join('')
+}
+
+async function loadActivity(token) {
+    try {
+        const qResp = await fetch('/api/users/me/questions', { headers: { 'Authorization': `Bearer ${token}` } })
+        if (qResp.ok) {
+            const qs = await qResp.json()
+            const el = document.getElementById('questions-panel')
+            if (el) el.innerHTML = makeCards(qs, 'My Question')
+        }
+
+        const aResp = await fetch('/api/users/me/answers', { headers: { 'Authorization': `Bearer ${token}` } })
+        if (aResp.ok) {
+            const ans = await aResp.json()
+            const el = document.getElementById('answers-panel')
+            if (el) el.innerHTML = makeCards(ans, 'My Answer')
+        }
+    } catch (e) { console.error(e) }
+}
+
+init()

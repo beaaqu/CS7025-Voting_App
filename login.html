@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>This or That — Login</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body class="auth-body">
   <main class="auth-shell">
     <section class="auth-left">
@@ -31,19 +33,21 @@
           Log in to join today’s decisions on This or That.
         </p>
 
-        <div class="auth-field">
-          <label for="username">Username</label>
-          <input id="username" type="text" placeholder="Enter your username" />
-        </div>
+        <form id="loginForm">
+          <div class="auth-field">
+            <label for="username">Username</label>
+            <input id="username" type="text" placeholder="Enter your username" required />
+          </div>
 
-        <div class="auth-field">
-          <label for="password">Password</label>
-          <input id="password" type="password" placeholder="Enter your password" />
-        </div>
+          <div class="auth-field">
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="Enter your password" required />
+          </div>
 
-        <button type="button" class="auth-primary-btn" id="loginBtn">
-          Login
-        </button>
+          <button type="submit" class="auth-primary-btn">
+            Login
+          </button>
+        </form>
 
         <button type="button" class="auth-secondary-btn" onclick="window.location.href='register.html'">
           Create Account
@@ -51,25 +55,7 @@
       </div>
     </section>
   </main>
-
-  <script>
-  document.getElementById("loginBtn").addEventListener("click", () => {
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value;
-
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
-
-    const user = users.find(u => u.username === username && u.password === password);
-
-    if (!user) {
-      alert("Invalid login");
-      return;
-    }
-
-    localStorage.setItem("currentUser", JSON.stringify(user));
-    window.location.href = "home.html";
-    });
-</script>
-
+  <script src="auth.js"></script>
 </body>
+
 </html>
