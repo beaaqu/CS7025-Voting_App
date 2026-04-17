@@ -19,6 +19,7 @@ app.use('/api/responses', require('./routes/responseRoutes'))
 app.use('/api/users', require('./routes/userRoutes'))
 app.use('/api/preferences', require('./routes/preferenceRoutes'))
 app.use('/api/home', require('./routes/homeRoutes'))
+app.use('/api', require('./routes/contact'))
 
 app.get('/', (req, res) => res.redirect('/home.html'))
 
